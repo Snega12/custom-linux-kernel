@@ -1,10 +1,12 @@
 // File: priority_test.c
 #include <linux/module.h>
 #include <linux/kernel.h>
-#include <linux/kthread.h>
-#include <linux/delay.h>
-#include <linux/sched.h>
+#include <linux/slab.h>
+#include <linux/random.h>
 #include <linux/semaphore.h>
+#include <linux/kthread.h>
+#include <linux/delay.h> // Include for prandom_u32
+#include <linux/sched.h>
 #include <linux/priority_queue.h>
 
 // Define a priority-based semaphore structure
@@ -27,10 +29,15 @@ static int thread_fn(void *data) {
 static int __init priority_test_init(void) {
     int i;
     struct task_struct *task;
-    int priorities[] = {10, 30, 20};
+    int priorities[3];
 
     sema_init(&sem, 1);
     prio_queue = create_priority_queue();
+
+    // Generate random priorities for the threads
+    for (i = 0; i < 3; i++) {
+        priorities[i] = get_random_u32() % 100; // Random priority between 0 and 99
+    }
 
     printk(KERN_INFO "Priority Test: Module loaded\n");
 
@@ -55,3 +62,5 @@ module_exit(priority_test_exit);
 MODULE_LICENSE("GPL");  // Add this line
 MODULE_AUTHOR("Your Name");
 MODULE_DESCRIPTION("Test Module for Priority Queue and Semaphore");
+
+

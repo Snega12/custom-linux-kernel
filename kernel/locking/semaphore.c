@@ -33,7 +33,7 @@
 #include <linux/spinlock.h>
 #include <linux/ftrace.h>
 #include <trace/events/lock.h>
-#include "priority_queue.h"
+#include <linux/priority_queue.h>
 static noinline void __down(struct semaphore *sem)__maybe_unused;
 static noinline int __down_interruptible(struct semaphore *sem);
 static noinline int __down_killable(struct semaphore *sem);

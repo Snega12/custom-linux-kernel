@@ -9,7 +9,7 @@ struct priority_queue *create_priority_queue(void) {
     }
     return queue;
 }
-EXPORT_SYMBOL(create_priority_queue);
+
 void add_to_priority_queue(struct priority_queue *queue, struct task_struct *task, int priority) {
     struct prio_node *new_node = kmalloc(sizeof(struct prio_node), GFP_KERNEL);
     if (!new_node) return; // Handle memory allocation failure
@@ -31,8 +31,6 @@ void add_to_priority_queue(struct priority_queue *queue, struct task_struct *tas
     // Insert before the found position
     list_add(&new_node->list, pos->prev);
 }
-EXPORT_SYMBOL(add_to_priority_queue);
-
 struct task_struct *get_highest_priority_task(struct priority_queue *queue) {
     if (!list_empty(&queue->head)) {
         struct prio_node *highest = list_first_entry(&queue->head, struct prio_node, list);
@@ -54,7 +52,7 @@ void remove_from_priority_queue(struct priority_queue *queue, struct task_struct
         }
     }
 }
-EXPORT_SYMBOL(remove_from_priority_queue);
+
 void free_priority_queue(struct priority_queue *queue) {
     struct prio_node *cur_node = NULL; // Rename current to cur_node
     struct list_head *pos, *n;
@@ -67,7 +65,15 @@ void free_priority_queue(struct priority_queue *queue) {
 
     kfree(queue); // Finally free the queue structure
 }
-EXPORT_SYMBOL(free_priority_queue);
+
 
 MODULE_LICENSE("GPL");
+
+
+//EXPORT_SYMBOL(create_priority_queue);
+
+//EXPORT_SYMBOL(add_to_priority_queue);
+
+//EXPORT_SYMBOL(remove_from_priority_queue);
+//EXPORT_SYMBOL(free_priority_queue);
 
